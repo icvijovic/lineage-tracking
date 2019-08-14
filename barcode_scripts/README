@@ -1,0 +1,60 @@
+## Analysis of barcoded lineage and clone frequency trajectories
+
+This directory contains scripts that use barcode count data to fit the branching process model for the trajectory, and estimate the fitnesses of all barcoded lineages to obtain a set of candidate lineages carrying beneficial mutations. It also contains scripts that jointly infers the fitnesses of all called clones in the barcoding and evolution environments.
+
+# Constructing the branching process model
+
+`fit_error_model.py’ fits and writes to a file the parameters, kappa_t, of the branching process model to the error model directory.
+
+usage: python fit_error_model.py
+
+# Constructing the null distribution
+`compile_null_distribution.py'. Compiles an empirical null distribution and q-values for specified FDR given the kappas and writes to error model directory (../data/error_model/).
+
+usage: python compile_null_distribution.py
+
+# Joint estimation of relative fitnesses of barcoded lineages
+
+`estimate_relative_fitnesses.py’ jointly estimates the relative fitness of all the barcoded lineages, as described in SI section . This script writes the fitness estimates of all the lineages whose fitness is positive in at least one segment of their trajectory to a directory named `../data/relative_fitnesses/‘.
+
+usage: estimate_relative_fitnesses.py
+
+##  Analysis of clone frequency trajectories
+
+All output is stored in ../data/accepted_clones/ . All scripts can be run in the correct sequence by calling the bash script 'process_clone_data.sh'
+
+# Compilation of lists of clones founded by new beneficial mutations
+
+`compile_clone_list.sh' Compiles a list of all clones, ordered by inferred establishment time based on flags found in ../data/flags/
+
+usage: bash compile_clone_list.sh pop_name
+
+positional arguments:
+  pop_name    name of population(C1 for YPD, D1 for YPA)
+
+# Calculating clone frequencies 
+`calculate_clone_frequencies.py' Calculates the frequencies of all clones founded by beneficial mutations based on barcoded lineage frequencies, and the list of lineages determined to carry new established mutations.
+
+usage: python calculate_clone_frequencies.py
+
+# Joint inference of clone frequencies 
+`measure_evolution_fitness.py' Jointly estimates the evolution environment fitness of each clone, as described in SI section 6.
+`measure_barcoding_fitness.py' Jointly estimates the barcoding environment fitness of each clone, as described in SI section 6.
+
+usage: python measure_evolution_fitness.py [-h] pop_name
+       python measure_barcoding_fitness.py [-h] pop_name
+
+positional arguments:
+  pop_name    name of population
+
+# Calculating P-values for the number of acquired beneficial mutations, based on a clone's frequency and fitness
+
+`calculate_segment_p_values.py' Calculates the p-values for the observed number of beneficial mutations for each clone and epoch, under the two models described in SI section 6.5.
+
+# Printing all clone data to a single file
+
+`print_all_clone_data.py' prints the identifying barcode arrays, fitness estimates in the two environments, confidence intervals for these fitness estimates, and frequencies in each timepoint of all called clones in both populations to a single file.
+
+usage: python print_all_clone_data.py
+
+
