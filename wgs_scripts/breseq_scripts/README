@@ -1,0 +1,18 @@
+# ILT WGS SNP and short indel calling 
+
+This directory contains scripts that process raw whole metagenome reads for the C1(YPD) and D1(YPA) populations. The file “ilt_wgs_population_samples.csv” contains names of different population sequences, as well as the directories where raw fastq files are stored (this needs to be modified by user). The following scripts should be called in sequence to produce SNP and short read time courses.
+
+## trim reads
+usage: bash trim_reads.sh population_name
+
+## use breseq to align to reference genome (breseq 0.27.1b), use 8 processors, predict polymorphisms
+
+breseq_genomes.sh population_name
+
+## create SNP and short indel timecourses (splits different genomic regions to parallelize, does a small amount of filtering to remove obvious errors)
+
+usage: bash create_timecourse.sh population_name
+
+## finally concatenate outputs into single file per population
+
+usage: bash merge_timecourse.sh population_name

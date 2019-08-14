@@ -1,0 +1,15 @@
+## Analysis of metagenomic sequencing data
+
+This folder contains all the scripts necessary to process raw fastq files output and produce allele frequency trajectories. Our approach to identify SNVs and small indels uses the breseq-lite scripts built to identify these variants in metagenomic sequence time-series data in E. coli (Good, McDonald, et. al.,(2017), Nature, 551:45-50), with modifications as described in SI section 7.
+
+The sub-directory breseq_scripts contains scripts that process raw fastq files to call SNV's and small indels that satisfy basic quality filters. The breseq output is stored in ../data/wgs/cluster_output/. Each population has a file that contains trajectories of all SNV’s and small indels called by breseq that satisfy basic quality filters (with roughly 100k lines per population). 
+
+To do this, the following two scripts should be called:
+
+'python process_cluster_output.py'	Removes variants that fall in repetitive regions of the genome, and calculates a p-value for the null model for every trajectory individually. Output stored in ../data/wgs/annotated/. Note that this script calls the executable 'annotate_pvalues', for which the source code can be located in the sub-directory trajectory_pvalue_cpp_code]
+
+usage: python process_cluster_output.py
+
+`filter_pvalue.py' Filters out all trajectories in ../../data/wgs/annotated/ with a p-value larger than PVALUE_THRESHOLD and stores the output in ../data/wgs/filtered/. Default PVALUE_THESHOLD is 0.05.
+
+usage: python filter_pvalue.py [-pvalue_threshold PVALUE_THRESHOLD]	
