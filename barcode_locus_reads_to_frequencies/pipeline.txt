@@ -1,0 +1,67 @@
+1. Cleanup the fastq files:
+
+This step generates a four column file which contains the N7 index sequence, the S5 index sequence, Read 1 sequence and Read 2 sequence.
+This step also gets rid of some primer dimers.
+The script expects two zipped files corresponding to the paired-end reads.
+
+bash parsing/clean.sh fastq.R1.txt.gz fastq.R2.txt.gz >cleaned_reads.txt
+
+2. Parse the cleaned fastq file:
+
+This step parses the index sequences into integers, converts each reads into 1) molecular barcodes, multiplex index and lineage barcodes.
+Final format is:
+illumina_index_1, illumina_index_2, multiplex_1, multiplex_2, lineage barcodes (from 2 to 4), molecular_barcode_1, molecular_barcode_2
+
+The parsing script requires python 3 with the regex library.
+
+cat cleaned_reads.txt | python parsing/parseX_Y.py >parsed_reads.txt
+
+3. Error correct the cleaned file:
+
+This step performs the clustering and error correction step to merge barcodes due to sequencing errors. Error correct column wise.
+Final format is same as the cleaned file, but with error corrected barcodes. The -pop flag indicates the column that indicates a specific population (0 if the file is a single population). The -bc flag indicates which column needs to be error corrected. The -cpu flag indicates how many cores to parallelize the process.
+The error_correct script can be compiled using the following flag on gcc version 6 and above: g++ error_correct.cpp -o error_correct -O3 -std=c++0x -lpthread -fopenmp -D_GLIBCXX_PARALLEL
+
+./parsing/error_correct -pop m -bc n -cpu o parsed_reads.txt >corrected_reads.txt
+
+4. Remove duplicate reads:
+
+This step uses molecular barcodes to remove duplicate reads.
+Final format is same as the cleaned file, but without any duplicate rows.
+
+sort -u corrected_reads.txt >unique_reads.txt
+
+Because we have, in some case, a unique population barcode that is common to all cells in the population, it may be useful to remove reads that are likely to be due to cross-indexing. 
+
+grep -v POPBARCODE corrected_reads.txt | sort -u >unique_reads.txt
+
+5. Convert reads to counts:
+
+This step demultiplexes the reads and generates a file where the first column is the barcode lineage for the reads and the counts over the epoch.
+
+perl convert_to_freqs/get_counts_BCX.pl unique_reads.txt >counts_epochX.txt
+
+6. Remove the lineages that are likely due to chimeric PCRs.
+
+perl convert_to_freqs/clean_counts.pl counts_epochX.txt >cleaned_counts_epochX.txt
+
+7. Assemble barcode files using barcode overlaps. We always assemble the last barcodes to the barcodes present in the read 1
+
+perl convert_to_freqs/assemble_BC.pl cleaned_counts_epoch(X-2).txt cleaned_counts_epoch(X-1).txt cleaned_counts_epochX.txt
+or
+perl convert_to_freqs/assemble_BC.pl cleaned_counts_epoch(X-3).txt cleaned_counts_epoch(X-2).txt cleaned_counts_epochX.txt
+
+8. Generate a file listing all the final cleaned_counts_epoch in correct order:
+
+ls -v cleaned_counts_epoch*.txt >cleaned_YPD.txt
+
+cleaned_YPD.txt:
+
+cleaned_counts_epoch1.txt
+cleaned_counts_epoch2.txt
+...
+cleaned_counts_epoch10.txt
+
+9. Compile the frequencies over the complete experiment for each barcode depth.
+
+perl compile_frequencies_BCX.pl cleaned_YPD.txt >frequencies_BCX.txt

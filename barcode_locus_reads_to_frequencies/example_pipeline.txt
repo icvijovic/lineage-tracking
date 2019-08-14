@@ -1,0 +1,169 @@
+DIRECTORY=/your/reads_directory
+
+FILEHANDLES=()
+
+FILEHANDLES+=('YPD_epoch_1')
+FILEHANDLES+=('YPD_epoch_2')
+FILEHANDLES+=('YPD_epoch_3')
+FILEHANDLES+=('YPD_epoch_4')
+FILEHANDLES+=('YPD_epoch_5')
+FILEHANDLES+=('YPD_epoch_6')
+FILEHANDLES+=('YPD_epoch_7')
+FILEHANDLES+=('YPD_epoch_8')
+FILEHANDLES+=('YPD_epoch_9')
+FILEHANDLES+=('YPD_epoch_10')
+
+# 1. clean
+
+bash parsing/clean.sh $DIRECTORY/${FILEHANDLES[0]}_* >cleaned_${FILEHANDLES[0]}.txt
+bash parsing/clean.sh $DIRECTORY/${FILEHANDLES[1]}_* >cleaned_${FILEHANDLES[1]}.txt
+bash parsing/clean.sh $DIRECTORY/${FILEHANDLES[2]}_* >cleaned_${FILEHANDLES[2]}.txt
+bash parsing/clean.sh $DIRECTORY/${FILEHANDLES[3]}_* >cleaned_${FILEHANDLES[3]}.txt
+bash parsing/clean.sh $DIRECTORY/${FILEHANDLES[4]}_* >cleaned_${FILEHANDLES[4]}.txt
+bash parsing/clean.sh $DIRECTORY/${FILEHANDLES[5]}_* >cleaned_${FILEHANDLES[5]}.txt
+bash parsing/clean.sh $DIRECTORY/${FILEHANDLES[6]}_* >cleaned_${FILEHANDLES[6]}.txt
+bash parsing/clean.sh $DIRECTORY/${FILEHANDLES[7]}_* >cleaned_${FILEHANDLES[7]}.txt
+bash parsing/clean.sh $DIRECTORY/${FILEHANDLES[8]}_* >cleaned_${FILEHANDLES[8]}.txt
+bash parsing/clean.sh $DIRECTORY/${FILEHANDLES[9]}_* >cleaned_${FILEHANDLES[9]}.txt
+
+# 2. parse
+
+cat cleaned_${FILEHANDLES[0]}.txt | python parsing/parse_0_100.py > parsed_${FILEHANDLES[0]}.txt
+cat cleaned_${FILEHANDLES[1]}.txt | python parsing/parse_100_200.py > parsed_${FILEHANDLES[1]}.txt
+cat cleaned_${FILEHANDLES[2]}.txt | python parsing/parse_200_300.py > parsed_${FILEHANDLES[2]}.txt
+cat cleaned_${FILEHANDLES[3]}.txt | python parsing/parse_300_400.py > parsed_${FILEHANDLES[3]}.txt
+cat cleaned_${FILEHANDLES[4]}.txt | python parsing/parse_400_500.py > parsed_${FILEHANDLES[4]}.txt
+cat cleaned_${FILEHANDLES[5]}.txt | python parsing/parse_500_600.py > parsed_${FILEHANDLES[5]}.txt
+cat cleaned_${FILEHANDLES[6]}.txt | python parsing/parse_600_700.py > parsed_${FILEHANDLES[6]}.txt
+cat cleaned_${FILEHANDLES[7]}.txt | python parsing/parse_700_800.py > parsed_${FILEHANDLES[7]}.txt
+cat cleaned_${FILEHANDLES[8]}.txt | python parsing/parse_800_900.py > parsed_${FILEHANDLES[8]}.txt
+cat cleaned_${FILEHANDLES[9]}.txt | python parsing/parse_900_1000.py > parsed_${FILEHANDLES[9]}.txt
+
+# 3. error correct
+
+./parsing/error_correct -pop 0 -bc 5 -cpu 8 parsed_${FILEHANDLES[0]}.txt >pre_corrected_${FILEHANDLES[0]}.txt
+./parsing/error_correct -pop 0 -bc 6 -cpu 8 pre_corrected_${FILEHANDLES[0]}.txt >corrected_${FILEHANDLES[0]}.txt
+rm pre_corrected_${FILEHANDLES[0]}.txt
+
+./parsing/error_correct -pop 0 -bc 5 -cpu 8 parsed_${FILEHANDLES[1]}.txt >pre_corrected_1_${FILEHANDLES[1]}.txt
+./parsing/error_correct -pop 0 -bc 6 -cpu 8 pre_corrected_1_${FILEHANDLES[1]}.txt >pre_corrected_2_${FILEHANDLES[1]}.txt
+./parsing/error_correct -pop 0 -bc 7 -cpu 8 pre_corrected_2_${FILEHANDLES[1]}.txt >corrected_${FILEHANDLES[1]}.txt
+rm pre_corrected_1_${FILEHANDLES[1]}.txt
+rm pre_corrected_2_${FILEHANDLES[1]}.txt
+
+./parsing/error_correct -pop 0 -bc 5 -cpu 8 parsed_${FILEHANDLES[2]}.txt >pre_corrected_1_${FILEHANDLES[2]}.txt
+./parsing/error_correct -pop 0 -bc 6 -cpu 8 pre_corrected_1_${FILEHANDLES[2]}.txt >pre_corrected_2_${FILEHANDLES[2]}.txt
+./parsing/error_correct -pop 0 -bc 7 -cpu 8 pre_corrected_2_${FILEHANDLES[2]}.txt >pre_corrected_3_${FILEHANDLES[2]}.txt
+./parsing/error_correct -pop 0 -bc 8 -cpu 8 pre_corrected_3_${FILEHANDLES[2]}.txt >corrected_${FILEHANDLES[2]}.txt
+rm pre_corrected_1_${FILEHANDLES[2]}.txt
+rm pre_corrected_2_${FILEHANDLES[2]}.txt
+rm pre_corrected_3_${FILEHANDLES[2]}.txt
+
+./parsing/error_correct -pop 0 -bc 5 -cpu 8 parsed_${FILEHANDLES[3]}.txt >pre_corrected_1_${FILEHANDLES[3]}.txt
+./parsing/error_correct -pop 0 -bc 6 -cpu 8 pre_corrected_1_${FILEHANDLES[3]}.txt >pre_corrected_2_${FILEHANDLES[3]}.txt
+./parsing/error_correct -pop 0 -bc 7 -cpu 8 pre_corrected_2_${FILEHANDLES[3]}.txt >corrected_${FILEHANDLES[3]}.txt
+rm pre_corrected_1_${FILEHANDLES[3]}.txt
+rm pre_corrected_2_${FILEHANDLES[3]}.txt
+
+./parsing/error_correct -pop 0 -bc 5 -cpu 8 parsed_${FILEHANDLES[4]}.txt >pre_corrected_1_${FILEHANDLES[4]}.txt
+./parsing/error_correct -pop 0 -bc 6 -cpu 8 pre_corrected_1_${FILEHANDLES[4]}.txt >pre_corrected_2_${FILEHANDLES[4]}.txt
+./parsing/error_correct -pop 0 -bc 7 -cpu 8 pre_corrected_2_${FILEHANDLES[4]}.txt >pre_corrected_3_${FILEHANDLES[4]}.txt
+./parsing/error_correct -pop 0 -bc 8 -cpu 8 pre_corrected_3_${FILEHANDLES[4]}.txt >corrected_${FILEHANDLES[4]}.txt
+rm pre_corrected_1_${FILEHANDLES[4]}.txt
+rm pre_corrected_2_${FILEHANDLES[4]}.txt
+rm pre_corrected_3_${FILEHANDLES[4]}.txt
+
+./parsing/error_correct -pop 0 -bc 5 -cpu 8 parsed_${FILEHANDLES[5]}.txt >pre_corrected_1_${FILEHANDLES[5]}.txt
+./parsing/error_correct -pop 0 -bc 6 -cpu 8 pre_corrected_1_${FILEHANDLES[5]}.txt >pre_corrected_2_${FILEHANDLES[5]}.txt
+./parsing/error_correct -pop 0 -bc 7 -cpu 8 pre_corrected_2_${FILEHANDLES[5]}.txt >corrected_${FILEHANDLES[5]}.txt
+rm pre_corrected_1_${FILEHANDLES[5]}.txt
+rm pre_corrected_2_${FILEHANDLES[5]}.txt
+
+./parsing/error_correct -pop 0 -bc 5 -cpu 8 parsed_${FILEHANDLES[6]}.txt >pre_corrected_1_${FILEHANDLES[6]}.txt
+./parsing/error_correct -pop 0 -bc 6 -cpu 8 pre_corrected_1_${FILEHANDLES[6]}.txt >pre_corrected_2_${FILEHANDLES[6]}.txt
+./parsing/error_correct -pop 0 -bc 7 -cpu 8 pre_corrected_2_${FILEHANDLES[6]}.txt >pre_corrected_3_${FILEHANDLES[6]}.txt
+./parsing/error_correct -pop 0 -bc 8 -cpu 8 pre_corrected_3_${FILEHANDLES[6]}.txt >corrected_${FILEHANDLES[6]}.txt
+rm pre_corrected_1_${FILEHANDLES[6]}.txt
+rm pre_corrected_2_${FILEHANDLES[6]}.txt
+rm pre_corrected_3_${FILEHANDLES[6]}.txt
+
+./parsing/error_correct -pop 0 -bc 5 -cpu 8 parsed_${FILEHANDLES[7]}.txt >pre_corrected_1_${FILEHANDLES[7]}.txt
+./parsing/error_correct -pop 0 -bc 6 -cpu 8 pre_corrected_1_${FILEHANDLES[7]}.txt >pre_corrected_2_${FILEHANDLES[7]}.txt
+./parsing/error_correct -pop 0 -bc 7 -cpu 8 pre_corrected_2_${FILEHANDLES[7]}.txt >corrected_${FILEHANDLES[7]}.txt
+rm pre_corrected_1_${FILEHANDLES[7]}.txt
+rm pre_corrected_2_${FILEHANDLES[7]}.txt
+
+./parsing/error_correct -pop 0 -bc 5 -cpu 8 parsed_${FILEHANDLES[8]}.txt >pre_corrected_1_${FILEHANDLES[8]}.txt
+./parsing/error_correct -pop 0 -bc 6 -cpu 8 pre_corrected_1_${FILEHANDLES[8]}.txt >pre_corrected_2_${FILEHANDLES[8]}.txt
+./parsing/error_correct -pop 0 -bc 7 -cpu 8 pre_corrected_2_${FILEHANDLES[8]}.txt >pre_corrected_3_${FILEHANDLES[8]}.txt
+./parsing/error_correct -pop 0 -bc 8 -cpu 8 pre_corrected_3_${FILEHANDLES[8]}.txt >corrected_${FILEHANDLES[8]}.txt
+rm pre_corrected_1_${FILEHANDLES[8]}.txt
+rm pre_corrected_2_${FILEHANDLES[8]}.txt
+rm pre_corrected_3_${FILEHANDLES[8]}.txt
+
+./parsing/error_correct -pop 0 -bc 5 -cpu 8 parsed_${FILEHANDLES[9]}.txt >pre_corrected_1_${FILEHANDLES[9]}.txt
+./parsing/error_correct -pop 0 -bc 6 -cpu 8 pre_corrected_1_${FILEHANDLES[9]}.txt >pre_corrected_2_${FILEHANDLES[9]}.txt
+./parsing/error_correct -pop 0 -bc 7 -cpu 8 pre_corrected_2_${FILEHANDLES[9]}.txt >corrected_${FILEHANDLES[9]}.txt
+rm pre_corrected_1_${FILEHANDLES[9]}.txt
+rm pre_corrected_2_${FILEHANDLES[9]}.txt
+
+# 4. Remove duplicate reads
+sort -u corrected_${FILEHANDLES[0]}.txt >unique_${FILEHANDLES[0]}.txt
+sort -u corrected_${FILEHANDLES[1]}.txt >unique_${FILEHANDLES[1]}.txt
+sort -u corrected_${FILEHANDLES[2]}.txt >unique_${FILEHANDLES[2]}.txt
+sort -u corrected_${FILEHANDLES[3]}.txt >unique_${FILEHANDLES[3]}.txt
+sort -u corrected_${FILEHANDLES[4]}.txt >unique_${FILEHANDLES[4]}.txt
+sort -u corrected_${FILEHANDLES[5]}.txt >unique_${FILEHANDLES[5]}.txt
+sort -u corrected_${FILEHANDLES[6]}.txt >unique_${FILEHANDLES[6]}.txt
+sort -u corrected_${FILEHANDLES[7]}.txt >unique_${FILEHANDLES[7]}.txt
+sort -u corrected_${FILEHANDLES[8]}.txt >unique_${FILEHANDLES[8]}.txt
+sort -u corrected_${FILEHANDLES[9]}.txt >unique_${FILEHANDLES[9]}.txt
+
+# 5. Convert reads to counts. Note, the get_counts scripts expect a particular demultiplexing primer pair.
+perl convert_to_freqs/get_counts_BC1.pl unique_${FILEHANDLES[0]}.txt >counts_${FILEHANDLES[0]}.txt
+perl convert_to_freqs/get_counts_BC2.pl unique_${FILEHANDLES[1]}.txt >counts_${FILEHANDLES[1]}.txt
+perl convert_to_freqs/get_counts_BC3.pl unique_${FILEHANDLES[2]}.txt >counts_${FILEHANDLES[2]}.txt
+perl convert_to_freqs/get_counts_BC4.pl unique_${FILEHANDLES[3]}.txt >counts_${FILEHANDLES[3]}.txt
+perl convert_to_freqs/get_counts_BC5.pl unique_${FILEHANDLES[4]}.txt >counts_${FILEHANDLES[4]}.txt
+perl convert_to_freqs/get_counts_BC6.pl unique_${FILEHANDLES[5]}.txt >counts_${FILEHANDLES[5]}.txt
+perl convert_to_freqs/get_counts_BC7.pl unique_${FILEHANDLES[6]}.txt >counts_${FILEHANDLES[6]}.txt
+perl convert_to_freqs/get_counts_BC8.pl unique_${FILEHANDLES[7]}.txt >counts_${FILEHANDLES[7]}.txt
+perl convert_to_freqs/get_counts_BC9.pl unique_${FILEHANDLES[8]}.txt >counts_${FILEHANDLES[8]}.txt
+perl convert_to_freqs/get_counts_BC10.pl unique_${FILEHANDLES[9]}.txt >counts_${FILEHANDLES[9]}.txt
+
+# 6. Remove chimeric reads
+perl convert_to_freqs/clean_counts.pl counts_${FILEHANDLES[0]}.txt >cleaned_counts_${FILEHANDLES[0]}.txt
+perl convert_to_freqs/clean_counts.pl counts_${FILEHANDLES[1]}.txt >cleaned_counts_${FILEHANDLES[1]}.txt
+perl convert_to_freqs/clean_counts.pl counts_${FILEHANDLES[2]}.txt >cleaned_counts_${FILEHANDLES[2]}.txt
+perl convert_to_freqs/clean_counts.pl counts_${FILEHANDLES[3]}.txt >pre_cleaned_counts_${FILEHANDLES[3]}.txt
+perl convert_to_freqs/clean_counts.pl counts_${FILEHANDLES[4]}.txt >pre_cleaned_counts_${FILEHANDLES[4]}.txt
+perl convert_to_freqs/clean_counts.pl counts_${FILEHANDLES[5]}.txt >pre_cleaned_counts_${FILEHANDLES[5]}.txt
+perl convert_to_freqs/clean_counts.pl counts_${FILEHANDLES[6]}.txt >pre_cleaned_counts_${FILEHANDLES[6]}.txt
+perl convert_to_freqs/clean_counts.pl counts_${FILEHANDLES[7]}.txt >pre_cleaned_counts_${FILEHANDLES[7]}.txt
+perl convert_to_freqs/clean_counts.pl counts_${FILEHANDLES[8]}.txt >pre_cleaned_counts_${FILEHANDLES[8]}.txt
+perl convert_to_freqs/clean_counts.pl counts_${FILEHANDLES[9]}.txt >pre_cleaned_counts_${FILEHANDLES[9]}.txt
+
+# 7. Assemble lineages
+perl convert_to_freqs/assemble_BC.pl cleaned_counts_${FILEHANDLES[1]}.txt cleaned_counts_${FILEHANDLES[2]}.txt pre_cleaned_counts_${FILEHANDLES[3]}.txt > cleaned_counts_${FILEHANDLES[3]}.txt
+perl convert_to_freqs/assemble_BC.pl cleaned_counts_${FILEHANDLES[1]}.txt cleaned_counts_${FILEHANDLES[2]}.txt pre_cleaned_counts_${FILEHANDLES[4]}.txt > cleaned_counts_${FILEHANDLES[4]}.txt
+perl convert_to_freqs/assemble_BC.pl cleaned_counts_${FILEHANDLES[3]}.txt cleaned_counts_${FILEHANDLES[4]}.txt pre_cleaned_counts_${FILEHANDLES[5]}.txt > cleaned_counts_${FILEHANDLES[5]}.txt
+perl convert_to_freqs/assemble_BC.pl cleaned_counts_${FILEHANDLES[3]}.txt cleaned_counts_${FILEHANDLES[4]}.txt pre_cleaned_counts_${FILEHANDLES[6]}.txt > cleaned_counts_${FILEHANDLES[6]}.txt
+perl convert_to_freqs/assemble_BC.pl cleaned_counts_${FILEHANDLES[5]}.txt cleaned_counts_${FILEHANDLES[6]}.txt pre_cleaned_counts_${FILEHANDLES[7]}.txt > cleaned_counts_${FILEHANDLES[7]}.txt
+perl convert_to_freqs/assemble_BC.pl cleaned_counts_${FILEHANDLES[5]}.txt cleaned_counts_${FILEHANDLES[6]}.txt pre_cleaned_counts_${FILEHANDLES[8]}.txt > cleaned_counts_${FILEHANDLES[8]}.txt
+perl convert_to_freqs/assemble_BC.pl cleaned_counts_${FILEHANDLES[7]}.txt cleaned_counts_${FILEHANDLES[8]}.txt pre_cleaned_counts_${FILEHANDLES[9]}.txt > cleaned_counts_${FILEHANDLES[9]}.txt
+
+# 8. Generate a file listing all the cleaned counts that correspond to this population
+ls -v cleaned_counts_YPD_epoch_*.txt | cat cleaned_YPD.txt
+
+# 9. Tabulate frequency files for each barcode depth.
+perl convert_to_freqs/compile_frequencies_BC1.pl cleaned_YPD.txt >YPD-BC1.txt
+perl convert_to_freqs/compile_frequencies_BC2.pl cleaned_YPD.txt >YPD-BC2.txt
+perl convert_to_freqs/compile_frequencies_BC3.pl cleaned_YPD.txt >YPD-BC3.txt
+perl convert_to_freqs/compile_frequencies_BC4.pl cleaned_YPD.txt >YPD-BC4.txt
+perl convert_to_freqs/compile_frequencies_BC5.pl cleaned_YPD.txt >YPD-BC5.txt
+perl convert_to_freqs/compile_frequencies_BC6.pl cleaned_YPD.txt >YPD-BC6.txt
+perl convert_to_freqs/compile_frequencies_BC7.pl cleaned_YPD.txt >YPD-BC7.txt
+perl convert_to_freqs/compile_frequencies_BC8.pl cleaned_YPD.txt >YPD-BC8.txt
+perl convert_to_freqs/compile_frequencies_BC9.pl cleaned_YPD.txt >YPD-BC9.txt
+perl convert_to_freqs/compile_frequencies_BC10.pl cleaned_YPD.txt >YPD-BC10.txt
+
