@@ -1,0 +1,16 @@
+This directory contains a script that can be used to generate all sub-mullers of a chosen focal barcoded lineage. Resulting submullers are stored in the local 'figures' sub-directory.
+
+usage: plot_lineage_submullers.py [-h] [--fitness] [--color]
+                                  [-highlight HIGHLIGHT] [-stopat STOPAT]
+                                  pop_name parental_barcode
+
+positional arguments:
+  pop_name              name of population
+  parental_barcode      parental barcode
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --fitness
+  --color
+  -highlight HIGHLIGHT  lineage to highlight
+  -stopat STOPAT        number of barcodes after focal to plot
