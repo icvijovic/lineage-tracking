@@ -1,4 +1,4 @@
-This directory contains scripts that can be used to repeat all the analysis described in sections 2, and 4-7 of the Supplementary Information accompanying Nguyen Ba*, Cvijovic* and Rojas Echenieque*, et al. (2019), and to generate all figures accompanying the manuscript.
+This directory contains scripts that can be used to repeat all the analysis described in sections 2, and 4-7 of the Supplementary Information accompanying Nguyen Ba*, Cvijovic* and Rojas Echenique*, et al. (2019), and to generate all figures accompanying the manuscript.
 
 The sub-directories are organized as follows
 'barcode_locus_reads_to_frequencies' 	Contains scripts necessary to reconstruct barcoded  lineage frequency trajectories from raw reads of the barcode locus, as described in section 2 of the SI.
