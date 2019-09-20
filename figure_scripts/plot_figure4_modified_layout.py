@@ -278,7 +278,7 @@ for population in reversed(config.populations):
 		parental_relative_fitness = clone_dict[parent_ID].relative_fitness[0] - sum(inferred_mean_fitness[no_epochs*11:no_epochs*11+10])/10.
 		parental_average_frequency = sum(clone_dict[parent_ID].freqs[no_epochs*11:no_epochs*11+10])/10.
 		
-		ax_parental_fitness.scatter(diff,parental_relative_fitness,marker = 'o',s = 20,lw = 0, color = pop_colors[population],alpha = 0.8,clip_on = False)
+		ax_parental_fitness.scatter(diff,parental_relative_fitness,marker = (300,0,0),s = 20,lw = 0, color = pop_colors[population],alpha = 0.8,clip_on = False)
 
 		if no_epochs > 2:
 			parental_relative_fitnesses.append(parental_relative_fitness)
@@ -355,7 +355,7 @@ for population in reversed(config.populations):
 		lineage_info.append((fitness_rank,max(lineage_dict[key].freqs[first_timepoint:11*max_barcode]),no_early_children))
 
 		s = min(10*(0.5+no_early_children)**2,300*4.5**2)
-		kwargs = dict(marker = 'o',color= config.pop_colors[population],s =s,alpha = 0.8,clip_on=False,zorder = 10-popindex)
+		kwargs = dict(marker = (300,0,0),color= config.pop_colors[population],s =s,alpha = 0.8,clip_on=False,zorder = 10-popindex)
 		
 		ax_ed_success.scatter(fitness_rank,max(lineage_dict[key].freqs[first_timepoint:11*max_barcode])+10**-5,**kwargs)
 
@@ -368,7 +368,7 @@ for population in reversed(config.populations):
 	ax_ed_success.set_ylabel('Maximum frequency\n in 2nd half of experiment',labelpad = 1)
 	if population == 'C1':
 		for no_children in range(0,7):
-			ax_ed_success.scatter([],[],marker = 'o',color = '#beae8a',alpha =  0.3,  s = min(10*(0.5+no_children)**2,300*4.5**2),label = no_children)
+			ax_ed_success.scatter([],[],marker = (300,0,0),color = '#beae8a',alpha =  0.3,  s = min(10*(0.5+no_children)**2,300*4.5**2),label = no_children)
 
 		ax_ed_success.legend(bbox_to_anchor = (1.4,0.),scatterpoints = 1,labelspacing = 1,handlelength = 1,fontsize = 7)
 
@@ -424,14 +424,14 @@ for population in reversed(config.populations):
 
 	ax_success.scatter(quantiles,mins+10**-5,marker = '_', color = pop_colors[population],alpha = 0.8,clip_on = False,zorder = 2,s= 10)
 	ax_success.scatter(quantiles,maxs,marker = '_', color = pop_colors[population],alpha = 0.8,clip_on = False, zorder = 2,s = 10)
-	ax_success.scatter(quantiles,means,marker = (200,0,0), color = pop_colors[population],alpha = 0.8,clip_on = False,zorder = 2,s = 6)
+	ax_success.scatter(quantiles,means,marker = (300,0,0), color = pop_colors[population],alpha = 0.8,clip_on = False,zorder = 2,s = 6)
 	for q in range(0,len(quantiles)):
 		xpos = quantiles[q]
 		ax_success.plot([xpos,xpos],[mins[q]+10**-5,maxs[q]],color = pop_colors[population], lw = 0.5,zorder = 1,clip_on = False)
 
 	ax_no_mutations.scatter(mut_categories,mins_mut+10**-5,marker = '_', color = pop_colors[population],alpha = 0.8,clip_on = False,zorder = 2,s = 10)
 	ax_no_mutations.scatter(mut_categories,maxs_mut,marker = '_', color = pop_colors[population],alpha = 0.8,clip_on = False, zorder = 2,s = 10)
-	ax_no_mutations.scatter(mut_categories,means_mut,marker = (200,0,0), color = pop_colors[population],alpha = 0.8,clip_on = False,zorder = 2,s = 6)
+	ax_no_mutations.scatter(mut_categories,means_mut,marker = (300,0,0), color = pop_colors[population],alpha = 0.8,clip_on = False,zorder = 2,s = 6)
 	for q in range(0,len(mut_categories)):
 			
 			ax_no_mutations.plot([mut_categories[q],mut_categories[q]],[mins_mut[q]+10**-5,maxs_mut[q]],color = pop_colors[population], lw = 0.5,zorder = 1,clip_on = False)
@@ -506,7 +506,7 @@ for population in reversed(config.populations):
 		contour_data = []
 		for epoch in range(clone_arising_epoch,max_barcode):
 
-			shape_kwargs = dict(alpha = 0.5, marker = (200,0,0),zorder = 0,s = 2,lw = 0,clip_on = True)
+			shape_kwargs = dict(alpha = 0.5, marker = (300,0,0),zorder = 0,s = 2,lw = 0,clip_on = True)
 			max_s = 90
 			if no_descendants[i][epoch]>0:
 				s = min(5*no_descendants[i][epoch]**2+10,max_s)
