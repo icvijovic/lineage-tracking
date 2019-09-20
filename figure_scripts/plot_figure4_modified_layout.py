@@ -424,14 +424,14 @@ for population in reversed(config.populations):
 
 	ax_success.scatter(quantiles,mins+10**-5,marker = '_', color = pop_colors[population],alpha = 0.8,clip_on = False,zorder = 2,s= 10)
 	ax_success.scatter(quantiles,maxs,marker = '_', color = pop_colors[population],alpha = 0.8,clip_on = False, zorder = 2,s = 10)
-	ax_success.scatter(quantiles,means,marker = 'o', color = pop_colors[population],alpha = 0.8,clip_on = False,zorder = 2,s = 6)
+	ax_success.scatter(quantiles,means,marker = (200,0,0), color = pop_colors[population],alpha = 0.8,clip_on = False,zorder = 2,s = 6)
 	for q in range(0,len(quantiles)):
 		xpos = quantiles[q]
 		ax_success.plot([xpos,xpos],[mins[q]+10**-5,maxs[q]],color = pop_colors[population], lw = 0.5,zorder = 1,clip_on = False)
 
 	ax_no_mutations.scatter(mut_categories,mins_mut+10**-5,marker = '_', color = pop_colors[population],alpha = 0.8,clip_on = False,zorder = 2,s = 10)
 	ax_no_mutations.scatter(mut_categories,maxs_mut,marker = '_', color = pop_colors[population],alpha = 0.8,clip_on = False, zorder = 2,s = 10)
-	ax_no_mutations.scatter(mut_categories,means_mut,marker = 'o', color = pop_colors[population],alpha = 0.8,clip_on = False,zorder = 2,s = 6)
+	ax_no_mutations.scatter(mut_categories,means_mut,marker = (200,0,0), color = pop_colors[population],alpha = 0.8,clip_on = False,zorder = 2,s = 6)
 	for q in range(0,len(mut_categories)):
 			
 			ax_no_mutations.plot([mut_categories[q],mut_categories[q]],[mins_mut[q]+10**-5,maxs_mut[q]],color = pop_colors[population], lw = 0.5,zorder = 1,clip_on = False)
@@ -506,7 +506,7 @@ for population in reversed(config.populations):
 		contour_data = []
 		for epoch in range(clone_arising_epoch,max_barcode):
 
-			shape_kwargs = dict(alpha = 0.5,marker = 'o',zorder = 0,s = 2,lw = 0,clip_on = True)
+			shape_kwargs = dict(alpha = 0.5, marker = (200,0,0),zorder = 0,s = 2,lw = 0,clip_on = True)
 			max_s = 90
 			if no_descendants[i][epoch]>0:
 				s = min(5*no_descendants[i][epoch]**2+10,max_s)
@@ -567,7 +567,7 @@ ax_number.set_xticklabels([])
 ax_average_fitness_variance.set_xticklabels([])
 
 
-ax_parental_frequency.scatter([],[], marker = 'o',s = 5,lw = 0,alpha = 1.,clip_on = True,edgecolor = 'w',color = '#beae8a',label = r'0')
+ax_parental_frequency.scatter([],[], marker=(100, 0, 0),s = 5,lw = 0,alpha = 1.,clip_on = True,edgecolor = 'w',color = '#beae8a',label = r'0')
 for no_descendants in range(1,5):
 	s = min(5*no_descendants**2+10,max_s)
 	if s < max_s:
